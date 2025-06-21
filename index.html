@@ -168,14 +168,16 @@
       yesBtn.style.transform = `scale(${yesScale})`;
 
       escapeCount++;
-      if (escapeCount >= 99999) {
+      if (escapeCount >= 999) {
         noBtn.innerText = "Artık kaçamam 😢";
         noBtn.disabled = true;
       }
     }
 
-    noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("touchstart", moveNoButton);
+    // Tüm etkileşimler için kaçma olayını bağla
+    ["mouseenter", "click", "touchstart"].forEach(evt =>
+      noBtn.addEventListener(evt, moveNoButton)
+    );
 
     yesBtn.addEventListener("click", () => {
       // Kalp yağmuru
