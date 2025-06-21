@@ -1,95 +1,93 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Benden Hoşlanıyor musun?</title>
-<style>
-  body {
-    font-family: sans-serif;
-    background: #fff0f5;
-    text-align: center;
-    padding: 50px 20px;
-    position: relative;
-    overflow: hidden;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Benden Hoşlanıyor musun?</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff0f5;
+      text-align: center;
+      padding: 50px 20px;
+      position: relative;
+      overflow: hidden;
+    }
 
-  /* Arka planda saydam kalp emojileri */
-  .heart-bg {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    opacity: 0.1;
-  }
+    /* Arka plan kalpleri */
+    .heart-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.1;
+    }
 
-  .heart-bg span {
-    font-size: 3rem;
-    color: #fff;
-    animation: pulse 4s ease-in-out infinite;
-  }
+    .heart-bg span {
+      font-size: 3rem;
+      color: #fff;
+      animation: pulse 4s ease-in-out infinite;
+    }
 
-  .heart-bg span:nth-child(odd) {
-    animation-delay: 0s;
-  }
-  .heart-bg span:nth-child(even) {
-    animation-delay: 2s;
-  }
+    .heart-bg span:nth-child(odd) { animation-delay: 0s; }
+    .heart-bg span:nth-child(even) { animation-delay: 2s; }
 
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.15; }
-    50% { transform: scale(1.2); opacity: 0.3; }
-  }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.15; }
+      50% { transform: scale(1.2); opacity: 0.3; }
+    }
 
-  h1 {
-    font-size: 2.5rem;
-    color: #c2185b;
-    position: relative;
-    z-index: 1;
-  }
+    h1 {
+      font-size: 2.5rem;
+      color: #c2185b;
+      position: relative;
+      z-index: 1;
+    }
 
-  .buttons {
-    position: relative;
-    height: 200px;
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    z-index: 1;
-  }
+    .buttons {
+      position: relative;
+      height: 200px;
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      z-index: 1;
+    }
 
-  button {
-    font-size: 1.5rem;
-    padding: 15px 25px;
-    border: none;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 1;
-  }
+    button {
+      font-size: 1.5rem;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+      cursor: pointer;
+    }
 
-  #yesBtn {
-    background-color: #4caf50;
-    color: white;
-  }
+    #yesBtn {
+      background-color: #4caf50;
+      color: white;
+    }
 
-  #noBtn {
-    background-color: #f44336;
-    color: white;
-  }
-</style>
+    #noBtn {
+      background-color: #f44336;
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
   <div class="heart-bg">
+    <!-- Arka plan kalpler -->
     <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
     <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
     <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
@@ -101,66 +99,70 @@
     <button id="noBtn">Hayır</button>
   </div>
 
-<script>
-  const yesBtn = document.getElementById('yesBtn');
-  const noBtn = document.getElementById('noBtn');
-  const container = document.querySelector('.buttons');
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const container = document.querySelector('.buttons');
 
-  let noScale = 1;
-  let yesScale = 1;
-  let escapeCount = 0;
+    let noScale = 1;
+    let yesScale = 1;
+    let escapeCount = 0;
 
-  function isOverlapping(elem1, elem2) {
-    const rect1 = elem1.getBoundingClientRect();
-    const rect2 = elem2.getBoundingClientRect();
+    function isOverlapping(elem1, elem2) {
+      const rect1 = elem1.getBoundingClientRect();
+      const rect2 = elem2.getBoundingClientRect();
 
-    return !(
-      rect1.right < rect2.left ||
-      rect1.left > rect2.right ||
-      rect1.bottom < rect2.top ||
-      rect1.top > rect2.bottom
-    );
-  }
+      return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+      );
+    }
 
-  function moveNoButton() {
-    const containerRect = container.getBoundingClientRect();
+    function moveNoButton() {
+      const containerRect = container.getBoundingClientRect();
 
-    const maxX = containerRect.width - noBtn.offsetWidth;
-    const maxY = containerRect.height - noBtn.offsetHeight;
+      const maxX = containerRect.width - noBtn.offsetWidth;
+      const maxY = containerRect.height - noBtn.offsetHeight;
 
-    let randomX, randomY;
-    let attempts = 0;
+      let randomX, randomY;
+      let attempts = 0;
 
-    do {
-      randomX = Math.random() * maxX;
-      randomY = Math.random() * maxY;
-      // Geçici pozisyon ver:
+      do {
+        randomX = Math.random() * maxX;
+        randomY = Math.random() * maxY;
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+        attempts++;
+        if (attempts > 100) break;
+      } while (isOverlapping(noBtn, yesBtn));
+
+      noBtn.style.position = "absolute";
       noBtn.style.left = randomX + "px";
       noBtn.style.top = randomY + "px";
 
-      attempts++;
-      if (attempts > 100) break; // Sonsuz döngüye girmesin
-    } while (isOverlapping(noBtn, yesBtn));
+      noScale *= 0.9;
+      yesScale *= 1.1;
 
-    noBtn.style.position = "absolute";
-    noBtn.style.left = randomX + "px";
-    noBtn.style.top = randomY + "px";
+      noBtn.style.transform = `scale(${noScale})`;
+      yesBtn.style.transform = `scale(${yesScale})`;
 
-    noScale *= 0.9;
-    yesScale *= 1.1;
-
-    noBtn.style.transform = `scale(${noScale})`;
-    yesBtn.style.transform = `scale(${yesScale})`;
+      escapeCount++;
+      if (escapeCount >= 9999) {
+        noBtn.innerText = "Artık kaçamam 😢";
+        noBtn.disabled = true;
+        // KAÇTIĞI YERDE SABİT KALIYOR, eski yerine dönmüyor
+      }
     }
-  }
 
-  noBtn.addEventListener("mouseenter", moveNoButton);
-  noBtn.addEventListener("touchstart", moveNoButton);
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
 
-  yesBtn.addEventListener("click", () => {
-    document.body.innerHTML = "<h1 style='color:green'>Ben de senden hoşlanıyorum! 💚</h1>";
-  });
-</script>
+    yesBtn.addEventListener("click", () => {
+      document.body.innerHTML = "<h1 style='color:green'>Ben de senden hoşlanıyorum! 💚</h1>";
+    });
+  </script>
 
 </body>
 </html>
