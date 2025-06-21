@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Benimle çıkar mısın?</title>
   <style>
     body {
@@ -41,13 +41,18 @@
       background-color: #4caf50;
       color: white;
       z-index: 2;
+      position: relative;
+      transform-origin: center center;
+      transform: scale(1);
     }
 
     #noBtn {
       background-color: #f44336;
       color: white;
-      z-index: 2;
       position: absolute;
+      z-index: 2;
+      transform-origin: center center;
+      transform: scale(1);
     }
 
     .falling-heart {
@@ -104,6 +109,7 @@
     let escapeCount = 0;
     let yesScale = 1;
     let noScale = 1;
+    let heartsInterval;
 
     function isOverlapping(x, y) {
       const yesRect = yesBtn.getBoundingClientRect();
@@ -132,15 +138,15 @@
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
 
-      // Büyüt-küçült efektleri
       yesScale *= 1.08;
       noScale *= 0.92;
+
       yesBtn.style.transform = `scale(${yesScale})`;
       noBtn.style.transform = `scale(${noScale})`;
 
       escapeCount++;
       if (escapeCount >= 999) {
-        noBtn.innerText = "Artık kaçamam 😢";
+        noBtn.textContent = "Artık kaçamam 😢";
         noBtn.disabled = true;
       }
     }
@@ -149,20 +155,28 @@
       noBtn.addEventListener(evt, moveNoBtn)
     );
 
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "falling-heart";
+      heart.textContent = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    }
+
     yesBtn.addEventListener("click", () => {
       title.textContent = "Yuppiii!!!";
       noBtn.style.display = "none";
-      yesBtn.disabled = true;
+      yesBtn.style.display = "none";
 
-      for (let i = 0; i < 50; i++) {
-        const heart = document.createElement("div");
-        heart.className = "falling-heart";
-        heart.textContent = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = Math.random() * 20 + 10 + "px";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 3000);
-      }
+      // Kalp yağmurunu başlat
+      heartsInterval = setInterval(createHeart, 150);
+
+      // 10 saniye sonra kalp yağmurunu durdur
+      setTimeout(() => {
+        clearInterval(heartsInterval);
+      }, 10000);
     });
   </script>
 </body>
