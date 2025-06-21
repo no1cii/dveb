@@ -17,18 +17,20 @@
     }
     .buttons {
       position: relative;
-      height: 300px;
+      height: 200px;
       margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
     }
     button {
       font-size: 1.5rem;
       padding: 15px 25px;
       border: none;
       border-radius: 10px;
-      margin: 10px;
       transition: all 0.3s ease;
       position: relative;
-      z-index: 1;
     }
     #yesBtn {
       background-color: #4caf50;
@@ -37,10 +39,6 @@
     #noBtn {
       background-color: #f44336;
       color: white;
-      position: absolute;
-      top: 50px;
-      left: 50%;
-      transform: translateX(-50%);
     }
   </style>
 </head>
@@ -50,34 +48,49 @@
     <button id="yesBtn">Evet</button>
     <button id="noBtn">Hayır</button>
   </div>
+
   <script>
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const container = document.querySelector('.buttons');
+
     let noScale = 1;
     let yesScale = 1;
     let escapeCount = 0;
+
     function moveNoButton() {
       const containerWidth = container.offsetWidth;
       const containerHeight = container.offsetHeight;
+
       const maxX = containerWidth - noBtn.offsetWidth;
       const maxY = containerHeight - noBtn.offsetHeight;
+
       const randomX = Math.random() * maxX;
       const randomY = Math.random() * maxY;
-      noBtn.style.left = randomX + "px";
-      noBtn.style.top = randomY + "px";
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = randomX + 'px';
+      noBtn.style.top = randomY + 'px';
+
       noScale *= 0.9;
       yesScale *= 1.1;
+
       noBtn.style.transform = `scale(${noScale})`;
       yesBtn.style.transform = `scale(${yesScale})`;
+
       escapeCount++;
       if (escapeCount >= 8) {
         noBtn.innerText = "Artık kaçamam 😢";
         noBtn.disabled = true;
+        noBtn.style.position = 'relative'; // Kaçış sonlandıktan sonra normale döner
+        noBtn.style.left = 'auto';
+        noBtn.style.top = 'auto';
       }
     }
-    noBtn.addEventListener("mouseenter", moveNoButton); // PC için
-    noBtn.addEventListener("touchstart", moveNoButton); // Mobil için
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
     yesBtn.addEventListener("click", () => {
       document.body.innerHTML = "<h1 style='color:green'>Ben de senden hoşlanıyorum! 💚</h1>";
     });
