@@ -168,7 +168,7 @@
       yesBtn.style.transform = `scale(${yesScale})`;
 
       escapeCount++;
-      if (escapeCount >= 8) {
+      if (escapeCount >= 99999) {
         noBtn.innerText = "Artık kaçamam 😢";
         noBtn.disabled = true;
       }
@@ -189,7 +189,7 @@
 
         setTimeout(() => {
           heart.remove();
-        }, 3000);
+        }, 30000);
       }
 
       // Yazı değiştir
