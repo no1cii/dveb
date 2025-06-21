@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Benden Hoşlanıyor musun?</title>
+  <title>Benimle çıkar mısın?</title>
   <style>
     body {
       font-family: sans-serif;
@@ -107,7 +107,7 @@
     <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
   </div>
 
-  <h1 id="question">Benden hoşlanıyor musun?</h1>
+  <h1 id="question">Benimle çıkar mısın?</h1>
   <div class="buttons">
     <button id="yesBtn">Evet</button>
     <button id="noBtn">Hayır</button>
@@ -168,7 +168,7 @@
       yesBtn.style.transform = `scale(${yesScale})`;
 
       escapeCount++;
-      if (escapeCount >= 899919) {
+      if (escapeCount >= 8) {
         noBtn.innerText = "Artık kaçamam 😢";
         noBtn.disabled = true;
       }
@@ -178,7 +178,7 @@
     noBtn.addEventListener("touchstart", moveNoButton);
 
     yesBtn.addEventListener("click", () => {
-      // Kalp yağmuru başlat
+      // Kalp yağmuru
       for (let i = 0; i < 50; i++) {
         const heart = document.createElement("div");
         heart.classList.add("falling-heart");
@@ -192,11 +192,9 @@
         }, 3000);
       }
 
-      // Yazıyı değiştir
-      question.textContent = "Benimle çıkar mısın?";
-      yesBtn.textContent = "Yuppiii!!!";
-
-      // Hayır butonunu kaldır (istersen)
+      // Yazı değiştir
+      question.textContent = "Yuppiii!!!";
+      yesBtn.disabled = true;
       noBtn.style.display = "none";
     });
   </script>
