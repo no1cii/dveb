@@ -1,89 +1,152 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Benden Hoşlanıyor musun?</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #fff0f5;
-      text-align: center;
-      padding: 50px 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    body::before {
-      content: "🤍";
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      font-size: 200px;
-      color: rgba(255, 255, 255, 0.15);
-      transform: translate(-50%, -50%);
-      user-select: none;
-      pointer-events: none;
-      z-index: 0;
-    }
-    h1 {
-      font-size: 2.5rem;
-      color: #c2185b;
-      position: relative;
-      z-index: 1;
-    }
-    .buttons {
-      position: relative;
-      height: 200px;
-      margin-top: 50px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 40px;
-      z-index: 1;
-    }
-    button {
-      font-size: 1.5rem;
-      padding: 15px 25px;
-      border: none;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      position: relative;
-      z-index: 1;
-    }
-    #yesBtn {
-      background-color: #4caf50;
-      color: white;
-    }
-    #noBtn {
-      background-color: #f44336;
-      color: white;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Benden Hoşlanıyor musun?</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #fff0f5;
+    text-align: center;
+    padding: 50px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Arka planda saydam kalp emojileri */
+  .heart-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.1;
+  }
+
+  .heart-bg span {
+    font-size: 3rem;
+    color: #fff;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .heart-bg span:nth-child(odd) {
+    animation-delay: 0s;
+  }
+  .heart-bg span:nth-child(even) {
+    animation-delay: 2s;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.15; }
+    50% { transform: scale(1.2); opacity: 0.3; }
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #c2185b;
+    position: relative;
+    z-index: 1;
+  }
+
+  .buttons {
+    position: relative;
+    height: 200px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    z-index: 1;
+  }
+
+  button {
+    font-size: 1.5rem;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  #yesBtn {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  #noBtn {
+    background-color: #f44336;
+    color: white;
+  }
+</style>
 </head>
 <body>
+
+  <div class="heart-bg">
+    <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
+    <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
+    <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
+  </div>
+
   <h1>Benden hoşlanıyor musun?</h1>
   <div class="buttons">
     <button id="yesBtn">Evet</button>
     <button id="noBtn">Hayır</button>
   </div>
 
-  <script>
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const container = document.querySelector('.buttons');
+<script>
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+  const container = document.querySelector('.buttons');
 
-    let noScale = 1;
-    let yesScale = 1;
-    let escapeCount = 0;
+  let noScale = 1;
+  let yesScale = 1;
+  let escapeCount = 0;
 
-    function moveNoButton() {
-      const containerWidth = container.offsetWidth;
-      const containerHeight = container.offsetHeight;
+  function moveNoButton() {
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
 
-      const maxX = containerWidth - noBtn.offsetWidth;
-      const maxY = containerHeight - noBtn.offsetHeight;
+    const maxX = containerWidth - noBtn.offsetWidth;
+    const maxY = containerHeight - noBtn.offsetHeight;
 
-      const randomX = Math.random() * maxX;
-      const randomY = Math.random() * maxY;
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
 
-      noBtn.style.position = 'ab
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = randomX + 'px';
+    noBtn.style.top = randomY + 'px';
+
+    noScale *= 0.9;
+    yesScale *= 1.1;
+
+    noBtn.style.transform = `scale(${noScale})`;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    escapeCount++;
+    if (escapeCount >= 8) {
+      noBtn.innerText = "Artık kaçamam 😢";
+      noBtn.disabled = true;
+      noBtn.style.position = 'relative';
+      noBtn.style.left = 'auto';
+      noBtn.style.top = 'auto';
+    }
+  }
+
+  noBtn.addEventListener("mouseenter", moveNoButton);
+  noBtn.addEventListener("touchstart", moveNoButton);
+
+  yesBtn.addEventListener("click", () => {
+    document.body.innerHTML = "<h1 style='color:green'>Ben de senden hoşlanıyorum! 💚</h1>";
+  });
+</script>
+
+</body>
+</html>
