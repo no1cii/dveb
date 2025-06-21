@@ -14,7 +14,6 @@
       overflow: hidden;
     }
 
-    /* Arka plan kalpleri */
     .heart-bg {
       position: fixed;
       top: 0; left: 0;
@@ -53,7 +52,7 @@
 
     .buttons {
       position: relative;
-      height: 200px;
+      height: 300px;
       margin-top: 50px;
       display: flex;
       justify-content: center;
@@ -82,18 +81,33 @@
       background-color: #f44336;
       color: white;
     }
+
+    .falling-heart {
+      position: fixed;
+      top: -50px;
+      font-size: 2rem;
+      animation: fall 3s linear forwards;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
   <div class="heart-bg">
-    <!-- Arka plan kalpler -->
     <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
     <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
     <span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span><span>🤍</span>
   </div>
 
-  <h1>Benden hoşlanıyor musun?</h1>
+  <h1 id="question">Benden hoşlanıyor musun?</h1>
   <div class="buttons">
     <button id="yesBtn">Evet</button>
     <button id="noBtn">Hayır</button>
@@ -103,20 +117,19 @@
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const container = document.querySelector('.buttons');
+    const question = document.getElementById('question');
 
     let noScale = 1;
     let yesScale = 1;
     let escapeCount = 0;
 
-    function isOverlapping(elem1, elem2) {
-      const rect1 = elem1.getBoundingClientRect();
-      const rect2 = elem2.getBoundingClientRect();
-
+    function isFakeOverlap(fakeRect, targetElem) {
+      const targetRect = targetElem.getBoundingClientRect();
       return !(
-        rect1.right < rect2.left ||
-        rect1.left > rect2.right ||
-        rect1.bottom < rect2.top ||
-        rect1.top > rect2.bottom
+        fakeRect.right < targetRect.left ||
+        fakeRect.left > targetRect.right ||
+        fakeRect.bottom < targetRect.top ||
+        fakeRect.top > targetRect.bottom
       );
     }
 
@@ -132,11 +145,17 @@
       do {
         randomX = Math.random() * maxX;
         randomY = Math.random() * maxY;
-        noBtn.style.left = randomX + "px";
-        noBtn.style.top = randomY + "px";
+
+        const fakeRect = {
+          top: containerRect.top + randomY,
+          left: containerRect.left + randomX,
+          right: containerRect.left + randomX + noBtn.offsetWidth,
+          bottom: containerRect.top + randomY + noBtn.offsetHeight
+        };
+
         attempts++;
         if (attempts > 100) break;
-      } while (isOverlapping(noBtn, yesBtn));
+      } while (isFakeOverlap(fakeRect, yesBtn));
 
       noBtn.style.position = "absolute";
       noBtn.style.left = randomX + "px";
@@ -149,10 +168,9 @@
       yesBtn.style.transform = `scale(${yesScale})`;
 
       escapeCount++;
-      if (escapeCount >= 9999) {
+      if (escapeCount >= 899919) {
         noBtn.innerText = "Artık kaçamam 😢";
         noBtn.disabled = true;
-        // KAÇTIĞI YERDE SABİT KALIYOR, eski yerine dönmüyor
       }
     }
 
@@ -160,7 +178,26 @@
     noBtn.addEventListener("touchstart", moveNoButton);
 
     yesBtn.addEventListener("click", () => {
-      document.body.innerHTML = "<h1 style='color:green'>Ben de senden hoşlanıyorum! 💚</h1>";
+      // Kalp yağmuru başlat
+      for (let i = 0; i < 50; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("falling-heart");
+        heart.textContent = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 10 + "px";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 3000);
+      }
+
+      // Yazıyı değiştir
+      question.textContent = "Benimle çıkar mısın?";
+      yesBtn.textContent = "Yuppiii!!!";
+
+      // Hayır butonunu kaldır (istersen)
+      noBtn.style.display = "none";
     });
   </script>
 
