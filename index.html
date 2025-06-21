@@ -1,182 +1,219 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Benimle çıkar mısın?</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #fff0f5;
-      text-align: center;
-      padding: 50px 20px;
-      overflow: hidden;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Benimle çıkar mısın?</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background-color: #fff0f5;
+    text-align: center;
+    padding: 50px 20px;
+    overflow: hidden;
+  }
 
-    h1 {
-      color: #c2185b;
-      font-size: 2.5rem;
-      margin-bottom: 50px;
-    }
+  h1 {
+    color: #c2185b;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+  }
 
-    .buttons {
-      position: relative;
-      height: 300px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 40px;
-    }
+  .buttons {
+    position: relative;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+  }
 
-    button {
-      font-size: 1.5rem;
-      padding: 15px 25px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      transform-origin: center center;
-      transform: scale(1);
-      position: static; /* Butonlar başlangıçta flex ile yan yana olsun */
-    }
+  button {
+    font-size: 1.5rem;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    transform-origin: center center;
+    transform: scale(1);
+    position: static;
+  }
 
-    #yesBtn {
-      background-color: #4caf50;
-      color: white;
-      z-index: 2;
-      position: relative; /* Evet buton relative olabilir */
-    }
+  #yesBtn {
+    background-color: #4caf50;
+    color: white;
+    z-index: 2;
+    position: relative;
+  }
 
-    #noBtn {
-      background-color: #f44336;
-      color: white;
-      z-index: 2;
-      /* position: absolute; Kaldırıldı */
-    }
+  #noBtn {
+    background-color: #f44336;
+    color: white;
+    z-index: 2;
+  }
 
-    .falling-heart {
-      position: fixed;
-      top: -50px;
-      font-size: 2rem;
-      animation: fall 3s linear forwards;
-      pointer-events: none;
-      z-index: 1000;
-    }
+  .falling-heart {
+    position: fixed;
+    top: -50px;
+    font-size: 2rem;
+    animation: fall 3s linear forwards;
+    pointer-events: none;
+    z-index: 1000;
+  }
 
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
+  @keyframes fall {
+    to {
+      transform: translateY(100vh);
+      opacity: 0;
     }
+  }
 
-    .heart-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0.07;
-      font-size: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-  </style>
+  .heart-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.07;
+    font-size: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+</style>
 </head>
 <body>
 
-  <div class="heart-bg">
-    🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍
-  </div>
+<div class="heart-bg">
+  🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍 🤍
+</div>
 
-  <h1 id="title">Benimle çıkar mısın?</h1>
+<h1 id="title">Benimle çıkar mısın?</h1>
 
-  <div class="buttons">
-    <button id="yesBtn">Evet</button>
-    <button id="noBtn">Hayır</button>
-  </div>
+<div class="buttons">
+  <button id="yesBtn">Evet</button>
+  <button id="noBtn">Hayır</button>
+</div>
 
-  <script>
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const title = document.getElementById("title");
-    const buttons = document.querySelector(".buttons");
+<script>
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const title = document.getElementById("title");
+  const buttons = document.querySelector(".buttons");
 
-    let escapeCount = 0;
-    let yesScale = 1;
-    let noScale = 1;
-    let heartsInterval;
+  let escapeCount = 0;
+  let yesScale = 1;
+  let noScale = 1;
+  let heartsInterval;
 
-    function isOverlapping(x, y) {
-      const yesRect = yesBtn.getBoundingClientRect();
-      const noRect = { left: x, top: y, right: x + noBtn.offsetWidth, bottom: y + noBtn.offsetHeight };
-      return !(noRect.right < yesRect.left ||
-               noRect.left > yesRect.right ||
-               noRect.bottom < yesRect.top ||
-               noRect.top > yesRect.bottom);
-    }
-
-    function moveNoBtn() {
-      if (escapeCount >= 999) return;
-
-      const btnsRect = buttons.getBoundingClientRect();
-      const maxX = btnsRect.width - noBtn.offsetWidth;
-      const maxY = btnsRect.height - noBtn.offsetHeight;
-
-      let x, y, attempts = 0;
-      do {
-        x = Math.random() * maxX;
-        y = Math.random() * maxY;
-        attempts++;
-        if (attempts > 100) break;
-      } while (isOverlapping(btnsRect.left + x, btnsRect.top + y));
-
-      // Buton pozisyonunu absolute yapmak gerekiyor kaçarken
-      noBtn.style.position = "absolute";
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-
-      yesScale *= 1.08;
-      noScale *= 0.92;
-
-      yesBtn.style.transform = `scale(${yesScale})`;
-      noBtn.style.transform = `scale(${noScale})`;
-
-      escapeCount++;
-      if (escapeCount >= 999) {
-        noBtn.textContent = "Artık kaçamam 😢";
-        noBtn.disabled = true;
-      }
-    }
-
-    ["mouseenter", "click", "touchstart"].forEach(evt =>
-      noBtn.addEventListener(evt, moveNoBtn)
+  function isOverlapping(x, y) {
+    const yesRect = yesBtn.getBoundingClientRect();
+    const noRect = {
+      left: x,
+      top: y,
+      right: x + noBtn.offsetWidth,
+      bottom: y + noBtn.offsetHeight,
+    };
+    return !(
+      noRect.right < yesRect.left ||
+      noRect.left > yesRect.right ||
+      noRect.bottom < yesRect.top ||
+      noRect.top > yesRect.bottom
     );
+  }
 
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "falling-heart";
-      heart.textContent = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 20 + 10 + "px";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 3000);
+  // Evet butonunun bulunduğu alanı biraz genişletelim, kaçış alanı sıkıntı olmasın diye
+  function isTooCloseToYesBtn(x, y, margin = 10) {
+    const yesRect = yesBtn.getBoundingClientRect();
+    const noRect = {
+      left: x - margin,
+      top: y - margin,
+      right: x + noBtn.offsetWidth + margin,
+      bottom: y + noBtn.offsetHeight + margin,
+    };
+    return !(
+      noRect.right < yesRect.left ||
+      noRect.left > yesRect.right ||
+      noRect.bottom < yesRect.top ||
+      noRect.top > yesRect.bottom
+    );
+  }
+
+  function moveNoBtn() {
+    if (escapeCount >= 999) return;
+
+    const btnsRect = buttons.getBoundingClientRect();
+    const maxX = btnsRect.width - noBtn.offsetWidth;
+    const maxY = btnsRect.height - noBtn.offsetHeight;
+
+    let x, y;
+    let attempts = 0;
+
+    do {
+      // Butonu daha düzgün dağıtmak için grid mantığıyla random pozisyon
+      // ekranı 6x6 bölüme bölelim, pozisyonları rastgele seçelim
+      const gridCols = 6;
+      const gridRows = 6;
+
+      const cellWidth = maxX / gridCols;
+      const cellHeight = maxY / gridRows;
+
+      const col = Math.floor(Math.random() * gridCols);
+      const row = Math.floor(Math.random() * gridRows);
+
+      x = col * cellWidth + (cellWidth - noBtn.offsetWidth) / 2;
+      y = row * cellHeight + (cellHeight - noBtn.offsetHeight) / 2;
+
+      attempts++;
+      if (attempts > 100) break;
+      // Evet butonuna çok yakınsa veya üst üste geliyorsa tekrar deneyelim
+    } while (isTooCloseToYesBtn(x + btnsRect.left, y + btnsRect.top, 20));
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    yesScale *= 1.08;
+    noScale *= 0.92;
+
+    yesBtn.style.transform = `scale(${yesScale})`;
+    noBtn.style.transform = `scale(${noScale})`;
+
+    escapeCount++;
+    if (escapeCount >= 999) {
+      noBtn.textContent = "Artık kaçamam 😢";
+      noBtn.disabled = true;
     }
+  }
 
-    yesBtn.addEventListener("click", () => {
-      title.textContent = "Yuppiii!!!";
-      noBtn.style.display = "none";
-      yesBtn.style.display = "none";
+  ["mouseenter", "click", "touchstart"].forEach((evt) =>
+    noBtn.addEventListener(evt, moveNoBtn)
+  );
 
-      heartsInterval = setInterval(createHeart, 150);
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "falling-heart";
+    heart.textContent = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 3000);
+  }
 
-      setTimeout(() => {
-        clearInterval(heartsInterval);
-      }, 10000);
-    });
-  </script>
+  yesBtn.addEventListener("click", () => {
+    title.textContent = "Yuppiii!!!";
+    noBtn.style.display = "none";
+    yesBtn.style.display = "none";
+
+    heartsInterval = setInterval(createHeart, 150);
+
+    setTimeout(() => {
+      clearInterval(heartsInterval);
+    }, 10000);
+  });
+</script>
 </body>
 </html>
