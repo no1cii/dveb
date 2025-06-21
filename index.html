@@ -35,24 +35,23 @@
       border-radius: 10px;
       cursor: pointer;
       transition: all 0.3s ease;
+      transform-origin: center center;
+      transform: scale(1);
+      position: static; /* Butonlar başlangıçta flex ile yan yana olsun */
     }
 
     #yesBtn {
       background-color: #4caf50;
       color: white;
       z-index: 2;
-      position: relative;
-      transform-origin: center center;
-      transform: scale(1);
+      position: relative; /* Evet buton relative olabilir */
     }
 
     #noBtn {
       background-color: #f44336;
       color: white;
-      position: absolute;
       z-index: 2;
-      transform-origin: center center;
-      transform: scale(1);
+      /* position: absolute; Kaldırıldı */
     }
 
     .falling-heart {
@@ -135,6 +134,8 @@
         if (attempts > 100) break;
       } while (isOverlapping(btnsRect.left + x, btnsRect.top + y));
 
+      // Buton pozisyonunu absolute yapmak gerekiyor kaçarken
+      noBtn.style.position = "absolute";
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
 
@@ -170,10 +171,8 @@
       noBtn.style.display = "none";
       yesBtn.style.display = "none";
 
-      // Kalp yağmurunu başlat
       heartsInterval = setInterval(createHeart, 150);
 
-      // 10 saniye sonra kalp yağmurunu durdur
       setTimeout(() => {
         clearInterval(heartsInterval);
       }, 10000);
